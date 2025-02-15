@@ -8,7 +8,7 @@ A Oficina
 
 <table>
 <tr>
-    <td><img src="../diogo.jpg width="100"></td>
+    <td><img src="../diogo.jpg" width="100"></td>
     <td>
     <strong>Nome:</strong> Diogo Afonso Costa Gonçalves<pt>
     <strong>Número:</strong> A101919
