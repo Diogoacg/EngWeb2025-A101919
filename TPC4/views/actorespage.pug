@@ -1,0 +1,72 @@
+extends layout
+
+block content
+    .w3-container.w3-padding-32
+        h1.w3-text-teal 
+            i.fa.fa-user.w3-margin-right
+            | #{actor}
+        
+        .w3-panel.w3-light-grey.w3-round
+            p 
+                i.fa.fa-film.w3-margin-right
+                | Participou em #{totalMovies} filme(s)
+            
+            // Mostrar géneros em que o ator mais participa
+            if Object.keys(genres).length > 0
+                p Géneros predominantes:
+                each count, genre in genres
+                    span.w3-tag.w3-round.w3-teal.w3-margin-right #{genre} (#{count})
+    
+    // Lista de filmes do ator
+    .w3-container
+        h2.w3-text-grey Filmografia
+        
+        if movies.length === 0
+            .w3-panel.w3-pale-yellow
+                p Não foram encontrados filmes para este ator.
+        else
+            .w3-row-padding
+                each movie in movies
+                    .w3-col.l3.m4.s6.w3-margin-bottom
+                        .w3-card.w3-white.w3-round.movie-card
+                            .w3-container.w3-padding.movie-card-content
+                                .movie-title
+                                    h4
+                                        a(href=`/movies/${movie.id}` style="text-decoration: none;")= movie.title
+                                
+                                p.w3-opacity= movie.year
+                                
+                                .movie-genres
+                                    if movie.genres && movie.genres.length
+                                        each genre in movie.genres
+                                            span.w3-tag.w3-round.w3-light-grey.w3-margin-right.w3-small= genre
+                            
+                            .w3-container.w3-padding.w3-border-top
+                                a.w3-btn.w3-block.w3-teal.w3-round(href=`/movies/${movie.id}`)
+                                    i.fa.fa-eye.w3-margin-right
+                                    | Ver Detalhes
+    
+    // Botão para voltar
+    .w3-container.w3-padding-32.w3-center
+        a.w3-btn.w3-grey.w3-round(href="/movies")
+            i.fa.fa-arrow-left.w3-margin-right
+            | Voltar à Listagem
+    
+    // Aplicar os mesmos estilos dos cartões da página principal
+    style.
+        .movie-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .movie-card-content {
+            flex: 1;
+        }
+        .movie-title {
+            height: 50px;
+            overflow: hidden;
+        }
+        .movie-genres {
+            height: 40px;
+            overflow: hidden;
+        }

@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var moviesRouter = require('./routes/movies');
+var actorsRouter = require('./routes/actors');
 
 var app = express();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/movies', moviesRouter);
+app.use('/actors', actorsRouter);
 
 // Redirect root to movies
 app.get('/', function(req, res) {

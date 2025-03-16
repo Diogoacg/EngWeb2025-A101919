@@ -1,0 +1,35 @@
+extends layout
+
+block content
+    h1.page-title Lista de Atores
+    
+    .w3-row-padding.w3-margin-bottom
+        .w3-col.l8
+            .w3-card.w3-round.w3-white
+                .w3-container.w3-padding
+                    form(method="GET" action="/actors")
+                        .w3-row
+                            .w3-col.m8.l9
+                                input.w3-input.w3-border.w3-round(
+                                    type="text" 
+                                    name="search" 
+                                    placeholder="Procurar ator..."
+                                    value=searchTerm || ""
+                                )
+                            .w3-col.m4.l3.w3-padding-small
+                                button.w3-btn.w3-teal.w3-round(type="submit") 
+                                    i.fa.fa-search.w3-margin-right
+                                    | Procurar
+    
+    // Mostrar resultados
+    .w3-container
+        p.w3-opacity Mostrando #{actors.length} ator(es)
+        
+        .w3-row-padding
+            each actor in actors
+                .w3-col.l3.m4.s6.w3-margin-bottom
+                    .w3-card.w3-white.w3-round
+                        .w3-container.w3-padding.w3-center
+                            h4= actor.name
+                            p.w3-opacity #{actor.count} filme(s)
+                            a.w3-btn.w3-teal.w3-round(href=`/actors/${encodeURIComponent(actor.name)}`) Ver Perfil

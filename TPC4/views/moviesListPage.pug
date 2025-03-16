@@ -114,6 +114,15 @@ block content
                             if movie.genres && movie.genres.length
                                 each genre in movie.genres
                                     span.w3-tag.w3-round.w3-light-grey.w3-margin-right.w3-small= genre
+                        // Adiciona esta secção dentro do cartão de cada filme, após os géneros
+                        // Na seção de elenco do moviesListPage.pug
+                        .movie-cast
+                            if movie.cast && Array.isArray(movie.cast) && movie.cast.length > 0
+                                p.w3-small.w3-opacity Elenco:
+                                each actor, index in movie.cast.slice(0, 2)
+                                    a.w3-tag.w3-round.w3-white.w3-border.w3-margin-right.w3-small.w3-hover-teal(href=`/actors/${encodeURIComponent(actor)}`)= actor
+                                if movie.cast.length > 2
+                                    span.w3-small.w3-opacity ...
                     
                     .w3-container.w3-padding.movie-card-actions
                         .w3-row
