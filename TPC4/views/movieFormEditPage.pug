@@ -1,0 +1,69 @@
+extends layout
+
+block content
+    h1.page-title Edit Movie
+    
+    .w3-card.w3-round.w3-white
+        form.w3-container.w3-padding-large(method="POST") 
+            .w3-row-padding
+                .w3-half
+                    label Movie ID
+                    input.w3-input.w3-border.w3-round.w3-light-grey(
+                        type="text" 
+                        name="id" 
+                        value=movie.id
+                        readonly
+                    )
+                
+                .w3-half
+                    label Title
+                    input.w3-input.w3-border.w3-round(
+                        type="text" 
+                        name="title" 
+                        value=movie.title
+                        required
+                    )
+            
+            .w3-row-padding.w3-margin-top
+                .w3-half
+                    label Year
+                    input.w3-input.w3-border.w3-round(
+                        type="number" 
+                        name="year" 
+                        min="1900" 
+                        max="2099" 
+                        value=movie.year || ""
+                    )
+                
+                .w3-half
+                    label Director
+                    input.w3-input.w3-border.w3-round(
+                        type="text" 
+                        name="director"
+                        value=movie.director || ""
+                    )
+            
+            .w3-row-padding.w3-margin-top
+                .w3-col
+                    label Cast (comma separated)
+                    input.w3-input.w3-border.w3-round(
+                        type="text" 
+                        name="cast" 
+                        value=movie.cast ? movie.cast.join(', ') : ''
+                    )
+            
+            .w3-row-padding.w3-margin-top
+                .w3-col
+                    label Genres (comma separated)
+                    input.w3-input.w3-border.w3-round(
+                        type="text" 
+                        name="genres" 
+                        value=movie.genresString
+                    )
+            
+            .w3-row-padding.w3-margin-top
+                .w3-col.s6.m4
+                    button.w3-btn.w3-teal.w3-round.w3-block(type="submit") Update Movie
+                
+                .w3-col.s6.m4
+                    a.w3-btn.w3-grey.w3-round.w3-block(href="/movies") Cancel

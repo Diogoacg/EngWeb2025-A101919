@@ -1,0 +1,128 @@
+extends layout 
+
+block content
+    // Page title and search
+    h1.page-title Movies Collection
+    
+    // Search and filter section
+    .w3-row.w3-margin-bottom
+        .w3-col.l8
+            .w3-card.w3-round.w3-white
+                .w3-container.w3-padding
+                    form(method="GET" action="/movies")
+                        .w3-row
+                            .w3-col.m7.l8
+                                input.w3-input.w3-border.w3-round(
+                                    type="text" 
+                                    name="search" 
+                                    placeholder="Search by title or actor..."
+                                    value=searchTerm || ""
+                                )
+                                // Preserve genre filters
+                                if selectedGenres && selectedGenres.length > 0
+                                    each genre in selectedGenres
+                                        input(type="hidden" name="genre" value=genre)
+                            .w3-col.m5.l4.w3-padding-small
+                                button.w3-btn.w3-teal.w3-round(type="submit" style="width: 100px;") 
+                                    i.fa.fa-search.w3-margin-right
+                                    | Search
+                                if searchTerm
+                                    - var genreParams = selectedGenres && selectedGenres.length > 0 ? selectedGenres.map(g => `genre=${encodeURIComponent(g)}`).join('&') : ''
+                                    a.w3-btn.w3-red.w3-round.w3-margin-left(href=`/movies${genreParams ? '?' + genreParams : ''}`) 
+                                        i.fa.fa-times.w3-margin-right
+                                        | Clear
+    
+    // Active filters display
+    if (selectedGenres && selectedGenres.length > 0)
+        .w3-panel.w3-light-grey.w3-round.w3-padding-small
+            span.w3-opacity Filtered by genres: 
+            each genre, index in selectedGenres
+                span.w3-tag.w3-teal.w3-round.w3-margin-right 
+                    | #{genre} 
+                    - var otherGenres = selectedGenres.filter(g => g !== genre)
+                    - var newQueryString = otherGenres.map(g => `genre=${encodeURIComponent(g)}`).join('&')
+                    - var searchParams = searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''
+                    a.w3-margin-left(href=`/movies${newQueryString ? '?' + newQueryString + searchParams : searchParams ? '?' + searchParams.substring(1) : ''}` style="text-decoration: none; color: white;") ×
+            if selectedGenres.length > 0
+                a.w3-btn.w3-small.w3-white.w3-round.w3-margin-left(href=searchTerm ? `/movies?search=${encodeURIComponent(searchTerm)}` : "/movies") 
+                    i.fa.fa-times.w3-margin-right
+                    | Clear Filters
+    
+    // Genre filter bar
+    .w3-bar.w3-light-grey.w3-round.w3-margin-bottom
+        a.w3-bar-item.w3-button(
+            href=searchTerm ? `/movies?search=${encodeURIComponent(searchTerm)}` : "/movies"
+            class=!selectedGenres || selectedGenres.length === 0 ? "w3-teal" : "") All
+        
+        each count, genre in genreCounts
+            - var encodedGenre = encodeURIComponent(genre)
+            - var isSelected = selectedGenres && selectedGenres.includes(genre)
+            - var searchParams = searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''
+            
+            if isSelected
+                // Remove genre when clicked if already selected
+                - var otherGenres = selectedGenres.filter(g => g !== genre)
+                - var newQueryString = otherGenres.map(g => `genre=${encodeURIComponent(g)}`).join('&')
+                a.w3-bar-item.w3-button.w3-teal(href=`/movies${newQueryString ? '?' + newQueryString + searchParams : searchParams ? '?' + searchParams.substring(1) : ''}`) #{genre} (#{count})
+            else
+                // Add genre when clicked
+                - var newQueryString = selectedGenres.map(g => `genre=${encodeURIComponent(g)}`).join('&')
+                - newQueryString = newQueryString ? `${newQueryString}&genre=${encodedGenre}` : `genre=${encodedGenre}`
+                a.w3-bar-item.w3-button(href=`/movies?${newQueryString}${searchParams}`) #{genre} (#{count})
+    
+    // Results count
+    if mlist.length > 0
+        p.w3-opacity Showing #{mlist.length} movies
+    else
+        .w3-panel.w3-pale-yellow.w3-center No movies found matching your criteria.
+    
+    // Movies display - Fixed alignment
+    style.
+        .movie-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .movie-card-content {
+            flex: 1;
+        }
+        .movie-card-actions {
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .movie-title {
+            height: 50px;
+            overflow: hidden;
+        }
+        .movie-genres {
+            height: 40px;
+            overflow: hidden;
+        }
+
+    .w3-row-padding
+        each movie in mlist
+            .w3-col.l3.m4.s6.w3-margin-bottom
+                .w3-card.w3-white.w3-round.movie-card
+                    .w3-container.w3-padding.movie-card-content
+                        .movie-title
+                            h4
+                                a(href=`/movies/${movie.id}` style="text-decoration: none;")= movie.title
+                        
+                        p.w3-opacity= movie.year
+                        
+                        .movie-genres
+                            if movie.genres && movie.genres.length
+                                each genre in movie.genres
+                                    span.w3-tag.w3-round.w3-light-grey.w3-margin-right.w3-small= genre
+                    
+                    .w3-container.w3-padding.movie-card-actions
+                        .w3-row
+                            .w3-third.w3-padding-small
+                                a.w3-btn.w3-blue.w3-round.w3-block(href=`/movies/edit/${movie.id}`) 
+                                    i.fa.fa-edit
+                            .w3-third.w3-padding-small
+                                a.w3-btn.w3-red.w3-round.w3-block(href=`/movies/delete/${movie.id}`) 
+                                    i.fa.fa-trash
+                            .w3-third.w3-padding-small
+                                a.w3-btn.w3-teal.w3-round.w3-block(href=`/movies/${movie.id}`) 
+                                    i.fa.fa-eye

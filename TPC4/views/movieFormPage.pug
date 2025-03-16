@@ -1,0 +1,122 @@
+extends layout 
+
+block content
+    h1.page-title Add New Movie
+    
+    .w3-card.w3-round.w3-white
+        form.w3-container.w3-padding-large(method="POST" onsubmit="return validateForm()") 
+            .w3-row-padding
+                .w3-half
+                    label Movie ID
+                    .w3-row
+                        .w3-col.m9
+                            input#movieId.w3-input.w3-border.w3-round(
+                                type="text" 
+                                name="id" 
+                                required
+                                placeholder="Required"
+                                oninput="checkIdAvailability()"
+                            )
+                        .w3-col.m3.w3-padding-small
+                            button#generateIdBtn.w3-btn.w3-teal.w3-round.w3-block(
+                                type="button"
+                                onclick="generateUniqueId()"
+                            ) Generate
+                    p#idFeedback.w3-small.w3-text-red
+                
+                .w3-half
+                    label Title
+                    input.w3-input.w3-border.w3-round(
+                        type="text" 
+                        name="title" 
+                        required
+                        placeholder="Required"
+                    )
+            
+            .w3-row-padding.w3-margin-top
+                .w3-half
+                    label Year
+                    input.w3-input.w3-border.w3-round(
+                        type="number" 
+                        name="year" 
+                        min="1900" 
+                        max="2099" 
+                        value="2023"
+                    )
+                
+                .w3-half
+                    label Director
+                    input.w3-input.w3-border.w3-round(
+                        type="text" 
+                        name="director"
+                        placeholder="Optional"
+                    )
+            
+            .w3-row-padding.w3-margin-top
+                .w3-col
+                    label Cast (comma separated)
+                    input.w3-input.w3-border.w3-round(
+                        type="text" 
+                        name="cast" 
+                        placeholder="e.g. Actor 1, Actor 2, Actor 3"
+                    )
+            
+            .w3-row-padding.w3-margin-top
+                .w3-col
+                    label Genres (comma separated)
+                    input.w3-input.w3-border.w3-round(
+                        type="text" 
+                        name="genres" 
+                        placeholder="e.g. Comedy, Drama, Action"
+                    )
+            
+            .w3-row-padding.w3-margin-top
+                .w3-col.s6.m4
+                    button.w3-btn.w3-teal.w3-round.w3-block(type="submit") Save Movie
+                
+                .w3-col.s6.m4
+                    a.w3-btn.w3-grey.w3-round.w3-block(href="/movies") Cancel
+    
+    script.
+        function checkIdAvailability() {
+            const id = document.getElementById('movieId').value.trim();
+            const feedback = document.getElementById('idFeedback');
+            
+            if (id === '') {
+                feedback.textContent = '';
+                return;
+            }
+            
+            fetch(`/movies/check-id/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        feedback.textContent = 'This ID already exists';
+                        document.getElementById('movieId').classList.add('w3-border-red');
+                    } else {
+                        feedback.textContent = 'ID available';
+                        feedback.classList.remove('w3-text-red');
+                        feedback.classList.add('w3-text-green');
+                        document.getElementById('movieId').classList.remove('w3-border-red');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    feedback.textContent = 'Error checking ID';
+                });
+        }
+        
+        function generateUniqueId() {
+            const id = 'm' + Math.random().toString(36).substring(2, 8);
+            document.getElementById('movieId').value = id;
+            checkIdAvailability();
+        }
+        
+        function validateForm() {
+            const feedback = document.getElementById('idFeedback');
+            if (feedback.textContent === 'This ID already exists') {
+                alert('Please use a unique ID');
+                return false;
+            }
+            return true;
+        }

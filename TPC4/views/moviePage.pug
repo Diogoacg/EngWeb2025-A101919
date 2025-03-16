@@ -1,0 +1,62 @@
+extends layout 
+
+block content
+    .w3-row
+        .w3-col.m1.l2
+            // Spacer
+        
+        .w3-col.s12.m10.l8
+            // Back to list button
+            .w3-margin-bottom
+                a.w3-btn.w3-light-grey.w3-round(href="/movies")
+                    i.fa.fa-arrow-left.w3-margin-right
+                    | Back to Movies
+            
+            .w3-card.w3-white.w3-round
+                .w3-container.w3-padding
+                    h2= movie.title
+                    p.w3-opacity ID: #{movie.id}
+                    
+                    .w3-row.w3-section
+                        .w3-col.m6
+                            p 
+                                strong Year: 
+                                span= movie.year || 'Unknown'
+                            
+                            if movie.director
+                                p 
+                                    strong Director: 
+                                    span= movie.director
+                        
+                        .w3-col.m6
+                            if movie.genres && movie.genres.length > 0
+                                p 
+                                    strong Genres:
+                                each genre in movie.genres
+                                    span.w3-tag.w3-light-grey.w3-round.w3-margin-right= genre
+                    
+                    // When displaying cast members
+                    if movie.cast && Array.isArray(movie.cast) && movie.cast.length > 0
+                        .w3-section
+                            p 
+                                strong Cast:
+                            .w3-ul.w3-border.w3-round.w3-padding
+                                each actor in movie.cast
+                                    span.w3-tag.w3-round.w3-light-grey.w3-margin-right= actor
+                    else if movie.cast
+                        .w3-section
+                            p 
+                                strong Cast:
+                            .w3-ul.w3-border.w3-round.w3-padding
+                                span.w3-tag.w3-round.w3-light-grey.w3-margin-right= movie.cast
+                    .w3-section.w3-border-top.w3-padding-16
+                        .w3-bar
+                            a.w3-btn.w3-blue.w3-round(href=`/movies/edit/${movie.id}`) 
+                                i.fa.fa-edit.w3-margin-right
+                                | Edit Movie
+                            a.w3-btn.w3-red.w3-round.w3-margin-left(href=`/movies/delete/${movie.id}`) 
+                                i.fa.fa-trash.w3-margin-right
+                                | Delete Movie
+        
+        .w3-col.m1.l2
+            // Spacer

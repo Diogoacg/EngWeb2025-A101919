@@ -1,0 +1,54 @@
+doctype html
+html
+  head
+    title Cinema Collection
+    link(rel='stylesheet', href='/stylesheets/w3.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css')
+    style.
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f9f9f9;
+      }
+      .main-header {
+        background-color: #009688; 
+        color: white;
+        padding: 16px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      }
+      .content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      .action-btn {
+        transition: all 0.2s;
+      }
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+      .page-title {
+        font-weight: 300;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 8px;
+      }
+  body
+    // Navigation bar
+    .w3-bar.w3-teal.w3-top
+      .content-container
+        a.w3-bar-item.w3-button(href='/movies') 
+          i.fa.fa-film.w3-margin-right
+          | Movies
+        a.w3-bar-item.w3-button.w3-right(href='/movies/registo') 
+          i.fa.fa-plus.w3-margin-right
+          | Add Movie
+    
+    // Main content
+    div(style="margin-top: 60px;")
+      .content-container
+        block content
+    
+    // Footer
+    footer.w3-container.w3-padding.w3-center.w3-light-grey.w3-small
+      p Cinema Management | #{date}
