@@ -1,0 +1,88 @@
+extends ../layout
+
+block content
+  h1
+    if isNew
+      i.fas.fa-user-plus
+      |  Adicionar Novo Aluno
+    else
+      i.fas.fa-user-edit
+      |  Editar Aluno
+  
+  .card
+    .card-body
+      form.aluno-form(method='POST', action= isNew ? '/alunos' : '/alunos/editar/' + aluno.id)
+        .form-container
+          .form-group
+            label(for='id')
+              i.fas.fa-id-badge
+              |  Código do Aluno:
+            if isNew
+              input#id(type='text', name='id', value=aluno.id || '', required, placeholder='Ex: A123456', pattern='^A[0-9]+$')
+              small Para criar um novo aluno, insira um ID que comece com "A" seguido por números
+            else
+              input#id(type='text', value=aluno.id, disabled)
+              input(type='hidden', name='id', value=aluno.id)
+              small O ID não pode ser modificado após a criação
+          
+          .form-group
+            label(for='name')
+              i.fas.fa-user
+              |  Nome Completo:
+            input#name(type='text', name='name', value=aluno.name || '', required, placeholder='Nome completo do aluno')
+          
+          .form-group
+            label(for='gitlink')
+              i.fab.fa-github
+              |  Link do Repositório Git:
+            input#gitlink(type='url', name='gitlink', value=aluno.gitlink || '', placeholder='https://github.com/utilizador/repositorio')
+            small Insira o URL completo do repositório GitHub do aluno
+          
+          h2
+            i.fas.fa-tasks
+            |  Trabalhos de Casa
+          
+          .tpc-section
+            .form-group
+              label.tpc-toggle
+                input(type='checkbox', name='tpc1', value='1', checked=aluno.tpc1=='1')
+                span.slider
+                span.label-text TPC1
+            
+            .form-group
+              label.tpc-toggle
+                input(type='checkbox', name='tpc2', value='1', checked=aluno.tpc2=='1')
+                span.slider
+                span.label-text TPC2
+            
+            .form-group
+              label.tpc-toggle
+                input(type='checkbox', name='tpc3', value='1', checked=aluno.tpc3=='1')
+                span.slider
+                span.label-text TPC3
+            
+            .form-group
+              label.tpc-toggle
+                input(type='checkbox', name='tpc4', value='1', checked=aluno.tpc4=='1')
+                span.slider
+                span.label-text TPC4
+            
+            .form-group
+              label.tpc-toggle
+                input(type='checkbox', name='tpc5', value='1', checked=aluno.tpc5=='1')
+                span.slider
+                span.label-text TPC5
+            
+            .form-group
+              label.tpc-toggle
+                input(type='checkbox', name='tpc6', value='1', checked=aluno.tpc6=='1')
+                span.slider
+                span.label-text TPC6
+          
+          .form-actions
+            a.btn(href='/alunos')
+              i.fas.fa-times
+              | Cancelar
+            button.btn.primary(type='submit')
+              i.fas.fa-save
+              | #{isNew ? 'Criar Aluno' : 'Guardar Alterações'}

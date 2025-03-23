@@ -1,0 +1,162 @@
+extends ../layout
+
+block content
+  h1
+    i.fas.fa-users
+    |  Lista de Alunos
+  
+  .filters
+    .search-container
+      input#searchInput(type='text', placeholder='Pesquisar alunos...', aria-label='Pesquisar alunos')
+      button.btn.search-btn(type='button')
+        i.fas.fa-search
+    
+    .actions
+      a.btn.add(href='/alunos/novo')
+        i.fas.fa-plus
+        | Novo Aluno
+  
+  if alunos && alunos.length > 0
+    .table-responsive
+      table#alunosTable.alunos-table
+        thead
+          tr
+            th
+              a.sort-link(href='#', data-sort='id') ID
+                i.fas.fa-sort
+            th
+              a.sort-link(href='#', data-sort='name') Nome
+                i.fas.fa-sort
+            th
+              a.sort-link(href='#', data-sort='git') Git
+                i.fas.fa-sort
+            th TPC1
+            th TPC2
+            th TPC3
+            th TPC4
+            th TPC5
+            th TPC6
+            th Ações
+        tbody
+          each aluno in alunos
+            tr(data-id=aluno.id, data-name=aluno.name.toLowerCase())
+              td= aluno.id
+              td
+                a(href=`/alunos/${aluno.id}`)= aluno.name
+              td
+                if aluno.gitlink
+                  a.git-link(href=aluno.gitlink, target='_blank')
+                    i.fab.fa-github
+                    | Repositório
+                else
+                  span.na-text N/A
+              each num in [1, 2, 3, 4, 5, 6]
+                td
+                  if aluno['tpc'+num]
+                    span.status-badge.positive
+                      i.fas.fa-check
+                      | Entregue
+                  else
+                    span.status-badge.negative
+                      i.fas.fa-times
+                      | Pendente
+              td.actions
+                a.btn.edit(href=`/alunos/editar/${aluno.id}` title='Editar')
+                  i.fas.fa-edit
+                a.btn.delete(href=`/alunos/apagar/${aluno.id}` title='Eliminar')
+                  i.fas.fa-trash
+    
+    .pagination
+      span.pagination-info A mostrar 
+        span#currentCount #{alunos.length}
+        |  de 
+        span#totalCount #{alunos.length}
+        |  alunos
+  else
+    .empty-message
+      i.fas.fa-users-slash
+      p Nenhum aluno encontrado.
+      a.btn.secondary(href='/alunos/novo')
+        i.fas.fa-plus
+        | Adicionar Primeiro Aluno
+
+block append styles
+  style.
+    .filters {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .search-container {
+      display: flex;
+      flex: 1;
+      max-width: 400px;
+    }
+    
+    #searchInput {
+      flex: 1;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: none;
+    }
+    
+    .search-btn {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      padding: 0.5rem 1rem;
+    }
+    
+    .sort-link {
+      color: inherit;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .git-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    
+    .git-link:hover {
+      text-decoration: underline;
+    }
+    
+    .na-text {
+      color: var(--gray-dark);
+      font-style: italic;
+    }
+    
+    .status-badge {
+      padding: 0.3rem 0.6rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      width: fit-content;
+    }
+    
+    .pagination {
+      margin-top: 1rem;
+      text-align: right;
+      color: var(--gray-dark);
+      font-size: 0.9rem;
+    }
+    
+    /* Adicione isso para melhorar a experiência em telas menores */
+    @media (max-width: 1200px) {
+      .table-responsive {
+        overflow-x: auto;
+      }
+      
+      .alunos-table {
+        min-width: 1000px;
+      }
+    }

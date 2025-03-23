@@ -1,0 +1,43 @@
+doctype html
+html
+  head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css')
+    link(rel='stylesheet', href='/css/style.css')
+    block styles
+  body
+    header
+      .header-container
+        h1 
+          i.fas.fa-graduation-cap
+          |  Sistema de Gestão de Alunos
+        nav
+          ul
+            li
+              a(href='/', class=currentPath === '/' ? 'active' : '')
+                i.fas.fa-home
+                |  Início
+            li
+              a(href='/alunos', class=currentPath && currentPath.startsWith('/alunos') ? 'active' : '')
+                i.fas.fa-users
+                |  Alunos
+
+    main
+      if successMessage
+        .alert.success
+          i.fas.fa-check-circle
+          | #{successMessage}
+      
+      if errorMessage
+        .alert.error
+          i.fas.fa-exclamation-circle
+          | #{errorMessage}
+          
+      block content
+    
+    footer
+      p &copy; 2025 - Universidade do Minho | Engenharia Web
+    
+    script(src='/js/scripts.js')

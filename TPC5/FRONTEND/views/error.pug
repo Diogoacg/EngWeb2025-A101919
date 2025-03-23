@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 Erro
+  h2= message
+  if error && error.status
+    h3 Estado: #{error.status}
+  if error && error.stack
+    pre #{error.stack}
+  
+  .actions
+    a.btn(href='javascript:history.back()')
+      i.fas.fa-arrow-left
+      | Voltar
+    a.btn(href='/')
+      i.fas.fa-home
+      | Página Inicial

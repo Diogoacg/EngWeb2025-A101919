@@ -1,0 +1,114 @@
+extends ../layout
+
+block content
+  h1
+    i.fas.fa-trash-alt
+    |  #{title}
+  
+  .delete-confirmation
+    .icon-warning
+      i.fas.fa-exclamation-triangle
+    
+    p.confirmation-message Tem a certeza de que deseja eliminar o seguinte aluno?
+    
+    .aluno-info
+      p
+        i.fas.fa-id-badge
+        strong ID: 
+        span= aluno.id
+      
+      p
+        i.fas.fa-user
+        strong Nome: 
+        span= aluno.name
+      
+      p
+        i.fab.fa-github
+        strong Git: 
+        if aluno.gitlink
+          a(href=aluno.gitlink, target='_blank')= aluno.gitlink
+        else
+          span N/A
+    
+    .warning
+      i.fas.fa-exclamation-circle
+      | Atenção: Esta ação não pode ser desfeita! Todos os dados do aluno serão permanentemente eliminados.
+    
+    form(method='POST', action=`/alunos/apagar/${aluno.id}`)
+      .form-actions
+        a.btn(href='/alunos')
+          i.fas.fa-arrow-left
+          | Cancelar
+        button.btn.delete(type='submit')
+          i.fas.fa-trash-alt
+          | Confirmar Eliminação
+
+block append styles
+  style.
+    .delete-confirmation {
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .icon-warning {
+      font-size: 4rem;
+      color: var(--danger-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .confirmation-message {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .aluno-info {
+      display: inline-block;
+      text-align: left;
+      padding: 1.5rem 2rem;
+      background: white;
+      border: 1px solid var(--gray-medium);
+      border-radius: var(--radius);
+      margin: 1rem 0 2rem;
+    }
+    
+    .aluno-info p {
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .aluno-info p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .aluno-info i {
+      width: 20px;
+      margin-right: 0.5rem;
+      color: var(--dark-color);
+    }
+    
+    .warning {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background-color: rgba(231, 76, 60, 0.15);
+      color: var(--danger-color);
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+      margin: 1.5rem 0;
+    }
+    
+    .warning i {
+      font-size: 1.5rem;
+      margin-right: 0.5rem;
+    }
+    
+    .form-actions {
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .form-actions .btn {
+      padding: 0.7rem 1.5rem;
+    }

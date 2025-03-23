@@ -1,0 +1,96 @@
+extends layout
+
+block content
+  .card
+    .card-header
+      h1
+        i.fas.fa-graduation-cap
+        |  Gestão de Alunos
+    
+    .card-body
+      section.welcome
+        p.lead Bem-vindo ao Sistema de Gestão de Alunos da disciplina de Engenharia Web.
+        p Este sistema permite gerir informações de alunos, incluindo:
+        
+        .feature-grid
+          .feature
+            i.fas.fa-list
+            h3 Listagem
+            p Visualização e pesquisa da lista completa de alunos.
+          
+          .feature
+            i.fas.fa-user
+            h3 Detalhes
+            p Consulta de informações detalhadas de cada aluno.
+          
+          .feature
+            i.fas.fa-plus-circle
+            h3 Registo
+            p Criação de novos registos de alunos.
+          
+          .feature
+            i.fas.fa-edit
+            h3 Edição
+            p Atualização de informações de alunos existentes.
+          
+          .feature
+            i.fas.fa-trash
+            h3 Remoção
+            p Exclusão de registos de alunos.
+          
+          .feature
+            i.fas.fa-tasks
+            h3 Trabalhos
+            p Controlo de entregas de trabalhos de casa.
+        
+        .actions
+          a.btn.secondary(href='/alunos')
+            i.fas.fa-users
+            | Ver Todos os Alunos
+          a.btn.primary(href='/alunos/novo')
+            i.fas.fa-plus
+            | Adicionar Novo Aluno
+
+block append styles
+  style.
+    .lead {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: var(--dark-color);
+    }
+    
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .feature {
+      background: var(--gray-light);
+      padding: 1.5rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+    
+    .feature i {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    
+    .feature h3 {
+      margin-bottom: 0.5rem;
+      color: var(--dark-color);
+    }
+    
+    @media (max-width: 768px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }

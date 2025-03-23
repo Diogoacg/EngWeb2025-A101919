@@ -129,17 +129,17 @@ O sistema implementa validações e conversões para garantir que tanto arrays q
 
 ## 📂 Lista de Resultados
 
-- views/layout.pug - Template base comum
-- views/moviesListPage.pug - Página de listagem de filmes
-- views/moviePage.pug - Página de detalhes de um filme
-- views/movieFormPage.pug - Formulário para adicionar um filme
-- views/movieFormEditPage.pug - Formulário para editar um filme
-- views/actorslistpage.pug - Lista de todos os atores
-- views/actorespage.pug - Perfil de um ator específico
-- views/error.pug - Página de erro
-- routes/movies.js - Router para operações de filmes
-- routes/actors.js - Router para operações de atores
-- app.js - Configuração principal da aplicação
-- formatMovies.py - Script Python para formatar dados de filmes
-- cinema.json - Dados de exemplo em formato JSON
-- cinemaFormatted.json - Dados de exemplo formatados para a aplicação
+-[views/layout.pug](views/layout.pug)
+-[views/moviesListPage.pug](views/moviesListPage.pug)
+-[views/moviePage.pug](views/moviePage.pug)
+-[views/movieFormPage.pug](views/movieFormPage.pug)
+-[views/movieFormEditPage.pug](views/movieFormEditPage.pug)
+-[views/actorslistpage.pug](views/actorslistpage.pug)
+-[views/actorespage.pug](views/actorespage.pug)
+-[views/error.pug](views/error.pug)
+-[routes/movies.js](routes/movies.js)
+-[routes/actors.js](routes/actors.js)
+-[app.js](app.js)
+-[formatMovies.py](formatMovies.py)
+-[cinema.json](cinema.json)
+-[cinemaFormatted.json](cinemaFormatted.json)

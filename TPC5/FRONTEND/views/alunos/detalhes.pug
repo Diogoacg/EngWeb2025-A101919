@@ -1,0 +1,152 @@
+extends ../layout
+
+block content
+  h1
+    i.fas.fa-user
+    |  Detalhes do Aluno
+  
+  if aluno
+    .card
+      .card-header
+        h2
+          | #{aluno.name} 
+          small.text-muted= aluno.id
+      
+      .card-body
+        .aluno-detalhes
+          .detail-row
+            p
+              i.fas.fa-id-badge
+              strong ID: 
+              span.badge= aluno.id
+            
+            p
+              i.fas.fa-user
+              strong Nome: 
+              span= aluno.name
+            
+            p
+              i.fab.fa-github
+              strong Repositório Git: 
+              if aluno.gitlink
+                a.git-link(href=aluno.gitlink, target='_blank')= aluno.gitlink
+              else
+                span.na-text N/A
+          
+          h3
+            i.fas.fa-tasks
+            |  Trabalhos de Casa
+          
+          .tpc-grid
+            each val, index in [1, 2, 3, 4, 5, 6]
+              .tpc-card(class=aluno['tpc'+val] ? 'submitted' : 'pending')
+                .tpc-icon
+                  if aluno['tpc'+val]
+                    i.fas.fa-check-circle
+                  else
+                    i.fas.fa-clock
+                .tpc-info
+                  h4 TPC#{val}
+                  p= aluno['tpc'+val] ? 'Entregue' : 'Não entregue'
+      
+      .card-footer
+        .actions
+          a.btn(href='/alunos')
+            i.fas.fa-arrow-left
+            | Voltar
+          a.btn.edit(href=`/alunos/editar/${aluno.id}`)
+            i.fas.fa-edit
+            | Editar
+          a.btn.delete(href=`/alunos/apagar/${aluno.id}`)
+            i.fas.fa-trash
+            | Eliminar
+  else
+    .empty-message
+      i.fas.fa-user-slash
+      p Aluno não encontrado.
+      a.btn(href='/alunos') Voltar para Lista
+
+block append styles
+  style.
+    .text-muted {
+      color: var(--gray-dark);
+      font-weight: normal;
+      font-size: 1rem;
+      margin-left: 1rem;
+    }
+    
+    .detail-row {
+      margin-bottom: 1.5rem;
+    }
+    
+    .detail-row p {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background: var(--gray-light);
+      border-radius: var(--radius-sm);
+    }
+    
+    .detail-row p i {
+      width: 24px;
+      color: var(--primary-color);
+      margin-right: 0.5rem;
+    }
+    
+    .badge {
+      background: var(--primary-color);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+    }
+    
+    .tpc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .tpc-card {
+      display: flex;
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .tpc-card.submitted {
+      background-color: rgba(46, 204, 113, 0.15);
+      border-left: 4px solid #27ae60;
+    }
+    
+    .tpc-card.pending {
+      background-color: rgba(52, 152, 219, 0.15);
+      border-left: 4px solid #3498db;
+    }
+    
+    .tpc-icon {
+      font-size: 2rem;
+      margin-right: 1rem;
+    }
+    
+    .tpc-card.submitted .tpc-icon {
+      color: #27ae60;
+    }
+    
+    .tpc-card.pending .tpc-icon {
+      color: #3498db;
+    }
+    
+    .tpc-info h4 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    
+    .tpc-info p {
+      margin: 0.2rem 0 0;
+      font-size: 0.9rem;
+      color: var(--gray-dark);
+    }
