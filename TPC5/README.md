@@ -43,17 +43,18 @@ node import_data.js
 
 #### 1. Configurar e iniciar o MongoDB
 ```bash
-# Se ainda não tiver instalado o MongoDB
-sudo apt-get install -y mongodb
+
+# Criar um container Docker para o MongoDB
+sudo docker run -d --name mongoTPC5 -p 27017:27017 mongo:latest
 
 # Iniciar o serviço MongoDB
-sudo service mongodb start
+sudo docker start mongoTPC5
 
 # Verificar se está em execução
-sudo service mongodb status
+sudo docker ps
 
 # Importar dados iniciais (se necessário)
-cd TPC5/API_DADOS
+cd API_DADOS/
 node import_data.js
 
 ```
