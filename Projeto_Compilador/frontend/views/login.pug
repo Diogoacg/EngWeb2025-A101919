@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  .container
+    .row.justify-content-center
+      .col-md-6.col-lg-4
+        .card.shadow
+          .card-body
+            h2.card-title.text-center.mb-4 Login
+            
+            if error
+              .alert.alert-danger(role="alert")= error
+            
+            if message
+              .alert.alert-success(role="alert")= message
+
+            form(action="/auth/login" method="POST")
+              .mb-3
+                label.form-label(for="username") Username
+                input.form-control#username(
+                  type="text" 
+                  name="username" 
+                  placeholder="Enter your username"
+                  required
+                )
+              
+              .mb-3
+                label.form-label(for="password") Password
+                input.form-control#password(
+                  type="password" 
+                  name="password" 
+                  placeholder="Enter your password"
+                  required
+                )
+              
+              .d-grid
+                button.btn.btn-primary(type="submit") Login
+
+            hr.my-4
+
+            .d-grid.gap-2
+              a.btn.btn-outline-danger(href="/auth/google")
+                i.fab.fa-google.me-2
+                | Login with Google
+              
+              a.btn.btn-outline-primary(href="/auth/facebook")
+                i.fab.fa-facebook-f.me-2
+                | Login with Facebook
+
+            .text-center.mt-3
+              p.mb-0
+                | Don't have an account? 
+                a(href="/auth/register") Register here

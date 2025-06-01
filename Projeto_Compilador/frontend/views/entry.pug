@@ -1,0 +1,131 @@
+extends layout
+
+block content
+  .container.mt-4
+    if entry
+      .row.justify-content-center
+        .col-md-8
+          .card.shadow
+            .card-header.d-flex.justify-content-between.align-items-center
+              div
+                h1.h3.mb-1= entry.title
+                .d-flex.align-items-center.text-muted
+                  i.fas.fa-calendar.me-1
+                  small= entry.date
+                  if entry.category
+                    span.badge.bg-secondary.ms-2= entry.category
+              div
+                if entry.isPublic
+                  span.badge.bg-success.fs-6
+                    i.fas.fa-globe.me-1
+                    | Public
+                else
+                  span.badge.bg-secondary.fs-6
+                    i.fas.fa-lock.me-1
+                    | Private
+
+            .card-body
+              // Content
+              .mb-4
+                p.lead= entry.content
+
+              // Tags
+              if entry.tags && entry.tags.length > 0
+                .mb-4
+                  h6.mb-2 Tags:
+                  each tag in entry.tags
+                    a.badge.bg-light.text-dark.text-decoration-none.me-2.mb-1(
+                      href=`${isPublicArea ? '/public' : '/timeline'}?tag=${typeof tag === 'string' ? tag.replace(/\s+/g, '-').toLowerCase() : tag.slug}`
+                    )
+                      = typeof tag === 'string' ? tag : tag.name
+
+              // Actions (apenas para donos ou admins)
+              if isAuthenticated && !isPublicArea
+                .border-top.pt-3
+                  h6.mb-3 Actions:
+                  .d-flex.gap-2.flex-wrap
+                    a.btn.btn-outline-primary.btn-sm(href=`/entry/${entry.id}/edit`)
+                      i.fas.fa-edit.me-1
+                      | Edit Entry
+                    
+                    button.btn.btn-outline-danger.btn-sm(type="button", data-bs-toggle="modal", data-bs-target="#deleteModal")
+                      i.fas.fa-trash.me-1
+                      | Delete
+
+                    // Social sharing
+                    .dropdown.d-inline
+                      button.btn.btn-outline-success.btn-sm.dropdown-toggle(type="button", data-bs-toggle="dropdown")
+                        i.fas.fa-share.me-1
+                        | Share
+                      ul.dropdown-menu
+                        li: a.dropdown-item(href="#", onclick=`shareToFacebook('${entry.id}')`)
+                          i.fab.fa-facebook.me-2
+                          | Facebook
+                        li: a.dropdown-item(href="#", onclick=`shareToTwitter('${entry.id}')`)
+                          i.fab.fa-twitter.me-2
+                          | Twitter
+
+        .col-md-4
+          // Sidebar with related info
+          .card.mb-3
+            .card-header
+              h6.mb-0
+                i.fas.fa-info-circle.me-2
+                | Entry Details
+            .card-body
+              .mb-2
+                strong Category:
+                span.ms-2= entry.category || "Uncategorized"
+              .mb-2
+                strong Created:
+                span.ms-2= entry.date
+              .mb-2
+                strong Visibility:
+                span.ms-2
+                  span.badge(class=entry.isPublic ? "bg-success" : "bg-secondary")
+                    = entry.isPublic ? "Public" : "Private"
+              if entry.tags && entry.tags.length > 0
+                .mb-2
+                  strong Tags:
+                  span.ms-2= entry.tags.length
+    else
+      .row.justify-content-center
+        .col-md-6.text-center
+          .card
+            .card-body.py-5
+              i.fas.fa-exclamation-triangle.fa-3x.text-warning.mb-3
+              h4.text-muted Entry Not Found
+              p.text-muted= errorMessage || "The requested entry could not be found."
+              a.btn.btn-primary(href=isPublicArea ? "/" : "/dashboard") 
+                i.fas.fa-home.me-2
+                | Go Home
+
+    // Delete confirmation modal
+    if isAuthenticated && !isPublicArea && entry
+      .modal.fade#deleteModal(tabindex="-1")
+        .modal-dialog
+          .modal-content
+            .modal-header
+              h5.modal-title Confirm Deletion
+              button.btn-close(type="button", data-bs-dismiss="modal")
+            .modal-body
+              p Are you sure you want to delete this entry? This action cannot be undone.
+              strong= entry.title
+            .modal-footer
+              button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancel
+              form.d-inline(action=`/entry/${entry.id}/delete`, method="POST")
+                button.btn.btn-danger(type="submit") Delete Entry
+
+block scripts
+  script.
+    // Social sharing functions
+    function shareToFacebook(entryId) {
+      const url = `${window.location.origin}/entry/${entryId}`;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+    }
+    
+    function shareToTwitter(entryId) {
+      const url = `${window.location.origin}/entry/${entryId}`;
+      const text = 'Check out this diary entry';
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank', 'width=600,height=400');
+    }
